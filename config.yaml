@@ -1,0 +1,18 @@
+# config.yaml
+proyecto: "Auditoría Tesorería Genérica"
+version: "2.0 (AI-Powered)"
+
+# Configuración del motor de Inteligencia Artificial Local
+ia_config:
+  modelo: "llama3.2:3b"
+  temperatura: 0.0  # Buscamos determinismo absoluto, cero creatividad
+
+# Qué entidades queremos que la IA rastree e identifique semánticamente en las tablas
+entidades_negocio:
+  target_año:
+    descripcion: "El año fiscal del registro (ej. 2023, 2024). Ignorar cantidades económicas parecidas."
+    key_json: "col_anio"
+  
+  target_capital:
+    descripcion: "El capital total acumulado, balance de tesorería o dinero total disponible."
+    key_json: "col_capital"

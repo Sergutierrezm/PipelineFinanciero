@@ -1,1 +1,6 @@
-credenciales.json
+# .gitignore
+*.db
+*.json
+*.txt
+__pycache__/
+.DS_Store

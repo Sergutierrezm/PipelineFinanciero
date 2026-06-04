@@ -1,0 +1,15 @@
+{
+    "google_drive": {
+        "credentials_file": "credenciales.json",
+        "document_name": "Tesoreria",
+        "sheets_to_extract": ["20,21,22", "23,24,25", "26,27,28", "Anual"]
+    },
+    "database": {
+        "db_name": "finanzas_cliente_a.db",
+        "table_prefix": "raw_"
+    },
+    "output": {
+        "json_consolidated": "tesoreria_consolidada.json",
+        "ia_report": "informe_financiero.txt"
+    }
+}

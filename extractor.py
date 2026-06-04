@@ -1,4 +1,3 @@
-# extractor.py
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
@@ -7,22 +6,20 @@ import sqlite3
 
 SCOPES = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-def conectar_y_descargar_sheet(nombre_documento, nombre_pestaña):
-    """Extrae absolutamente todo lo que haya en la pestaña en bruto, sin filtros."""
-    ruta_json = Path("credenciales.json")
-    if not ruta_json.exists():
-        print(f"❌ Error: No se encuentra '{ruta_json.name}'")
+def conectar_y_descargar_sheet(ruta_json, nombre_documento, nombre_pestaña):
+    """Extrae datos de cualquier pestaña y cualquier archivo JSON de credenciales."""
+    ruta = Path(ruta_json)
+    if not ruta.exists():
+        print(f"❌ Error: No se encuentra el archivo de credenciales '{ruta.name}'")
         return None
     try:
-        credenciales = ServiceAccountCredentials.from_json_keyfile_name(ruta_json, SCOPES)
+        credenciales = ServiceAccountCredentials.from_json_keyfile_name(ruta, SCOPES)
         cliente = gspread.authorize(credenciales)
         datos_crudos = cliente.open(nombre_documento).worksheet(nombre_pestaña).get_all_values()
         
         if not datos_crudos:
             return pd.DataFrame()
             
-        # Creamos un DataFrame plano. Usamos columnas genéricas (Col_0, Col_1...) 
-        # para que NADA en la estructura del Excel pueda romper la extracción.
         df = pd.DataFrame(datos_crudos)
         print(f"📥 [EXTRACT] -> '{nombre_pestaña}' descargada en bruto ({len(df)} filas).")
         return df
@@ -30,21 +27,23 @@ def conectar_y_descargar_sheet(nombre_documento, nombre_pestaña):
         print(f"❌ Error al extraer [{nombre_pestaña}]: {e}")
         return None
 
-def ejecutar_pipeline_extraccion():
+def ejecutar_pipeline_extraccion(config):
     print("⏳ Iniciando el Motor Genérico y Agnóstico de Extracción...")
-    DOCUMENTO = "Tesoreria"
-    PESTAÑAS = ["20,21,22", "23,24,25", "26,27,28", "Anual"]
     
-    conexion = sqlite3.connect("archivos_finanzas.db")
-    for pestaña in PESTAÑAS:
-        df_raw = conectar_y_descargar_sheet(DOCUMENTO, pestaña)
+    # Extraemos las variables desde el objeto config de manera dinámica
+    ruta_credenciales = config["google_drive"]["credentials_file"]
+    documento = config["google_drive"]["document_name"]
+    pestañas = config["google_drive"]["sheets_to_extract"]
+    db_nombre = config["database"]["db_name"]
+    prefijo = config["database"]["table_prefix"]
+    
+    conexion = sqlite3.connect(db_nombre)
+    for pestaña in pestañas:
+        df_raw = conectar_y_descargar_sheet(ruta_credenciales, documento, pestaña)
         if df_raw is not None and not df_raw.empty:
-            # Se guarda la matriz tal cual está en la nube
-            nombre_tabla = f"raw_{pestaña.replace(',', '_')}"
+            # Reemplazamos caracteres conflictivos para nombres de tablas SQL
+            nombre_tabla = f"{prefijo}{pestaña.replace(',', '_').replace(' ', '_')}"
             df_raw.to_sql(nombre_tabla, conexion, if_exists='replace', index=False)
             print(f"💾 [LOAD] -> Guardada tabla local: '{nombre_tabla}'")
     conexion.close()
     print("🏁 [EXTRACTOR] Datos en bruto guardados localmente.")
-
-if __name__ == "__main__":
-    ejecutar_pipeline_extraccion()

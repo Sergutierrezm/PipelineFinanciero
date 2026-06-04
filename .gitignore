@@ -1,6 +1,10 @@
-# .gitignore
-*.db
+# Credenciales y llaves de Google
 *.json
+!config.json
+
+# Bases de datos locales (SQLite)
+*.db
+*.sqlite3
+
+# Informes y datos consolidados
 *.txt
-__pycache__/
-.DS_Store

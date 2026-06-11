@@ -58,20 +58,18 @@ Bash
 python main.py
 Selecciona una opción del menú interactivo:
 
-* **1 Extraer: Descarga y vuelca las hojas de cálculo crudas en la base de datos SQLite.
+* 1 Extraer: Descarga y vuelca las hojas de cálculo crudas en la base de datos SQLite.
 
-* **2 Analizar (JSON): Limpia la base de datos, unifica criterios y genera el JSON y el gráfico de evolución de capital.
+* 2 Analizar (JSON): Limpia la base de datos, unifica criterios y genera el JSON y el gráfico de evolución de capital.
 
-* **3 Flujo Completo: Ejecuta todo el ciclo ETL en un solo comando de forma secuencial.
+* 3 Flujo Completo: Ejecuta todo el ciclo ETL en un solo comando de forma secuencial.
 
-* **4 Análisis IA: Ejecuta el agente inteligente para auditar el JSON consolidado y generar las conclusiones financieras en texto plano.
-
+* 4 Análisis IA: Ejecuta el agente inteligente para auditar el JSON consolidado y generar las conclusiones financieras en texto plano.
 
 ---
 
-### 💡 ¿Por qué está enfocado así?
-* **Usa tus propios términos:** He rescatado los nombres exactos de tus scripts (`extractor`, `analizador`, `analista_ia`) y el esquema del `config.json` que venía en tu código para que el README encaje a la perfección.
-* **Le da caché al proyecto:** En lugar de decir simplemente "lee un excel", usamos términos de industria como *Pipeline ETL*, *Multi-drive*, *Consolidación de datos* e *IA Insights*, que es lo que busca leer cualquier reclutador o Tech Lead.
+### ✍️ Autor
 
+* Sergio Gutiérrez Moreno
 
 

@@ -1,10 +1,33 @@
-# Credenciales y llaves de Google
+--- TEMPORALES DEL SISTEMA Y PYTHON ---
+
+pycache/
+*.py[cod]
+*$py.class
+.DS_Store
+Thumbs.db
+
+--- CREDENCIALES Y CONFIGURACIÓN ---
+
+Ignora todos los JSON (como credenciales.json o tesoreria_consolidada.json)
+
 *.json
+
+Excluye la plantilla para que sí se suba la estructura a GitHub
+
 !config.json
 
-# Bases de datos locales (SQLite)
+--- BASES DE DATOS LOCALES ---
+
 *.db
+*.sqlite
 *.sqlite3
 
-# Informes y datos consolidados
+--- INFORMES Y GRÁFICOS PRIVADOS ---
+
+Evita subir tu informe financiero real generado por la IA
+
 *.txt
+
+Evita subir el gráfico con la evolución de tus finanzas reales
+
+evolucion_capital.png
